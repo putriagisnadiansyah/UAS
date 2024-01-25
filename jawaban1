@@ -1,0 +1,52 @@
+#ini digunakan di terminal untuk memindahkan folder
+mv src src_old 
+
+#ini digunakan di terminal untuk membuat dan menjalankan container docker
+docker-compose up -d --build 
+
+#ini digunakan untuk masuk kedalam container
+docker exec -it (namacontainer) bash 
+
+#ini dijalankan didalam container untuk digunakan membuat source code laravel didalam container
+composer create-project laravel/laravel . 
+
+#memberikan akses folder storage
+chmod 777 -R storage/*
+
+#untuk generate key laravel
+php artisan key:generate
+
+#untuk migrasi database/cek koneksi database
+php artisan migrate
+
+#untuk fresh install database 
+php artisan migrate:fresh
+
+#install filament didalam container
+composer require filament/filament:"^3.1"
+
+#install panel filament
+php artisan filament:install --panels
+
+#membuat user di filament
+php artisan make:filament-user 
+
+#membuat model migrate
+php artisan make:model Category -m
+php artisan make:model Tag -m
+php artisan make:model Product -m
+php artisan make:model Order -m
+
+#membuat migration
+php artisan make:migration AddIsAdmintoUser
+php artisan make:migration AddStatusToProduct
+php artisan make:migration AddIsCompleteToOrder
+php artisan make:migration AddIsDescriptionToProduct
+php artisan make:migration AddIsAccountantToUser
+php artisan make:migration ProductTag
+
+#bikin resource
+php artisan make:filament-resource Product --generate
+php artisan make:filament-resource Category --generate
+php artisan make:filament-resource Tag --generate
+php artisan make:filament-resource Order --generate
